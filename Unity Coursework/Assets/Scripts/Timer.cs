@@ -19,7 +19,7 @@ public class Timer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //stop timer if the player has compelted the level, otherwise keep counting down
+        //stop timer if the player has completed the level, otherwise keep counting down
         if (levelComplete)
             return;
 

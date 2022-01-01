@@ -28,6 +28,8 @@ public class SimpleCollectibleScript : MonoBehaviour {
 
 	public bool durationTime = false;
 
+	public ParticleSystem particleSystem;
+
 	//public AudioSource collectSound; //for future implementation
 
 
@@ -58,6 +60,7 @@ public class SimpleCollectibleScript : MonoBehaviour {
 		if(collectSound)
 			AudioSource.PlayClipAtPoint(collectSound, transform.position);
 		if(collectEffect)
+			//special effects when a collectible has been acquired
 			Instantiate(collectEffect, transform.position, Quaternion.identity);
 
 
@@ -78,6 +81,8 @@ public class SimpleCollectibleScript : MonoBehaviour {
 		}
 		if (CollectibleType == CollectibleTypes.HealthRecovery) {
 
+			particleSystem.Play();
+
 			//set player's health to max
 			player.currentHealth = player.maxHealth;
 			player.healthBar.SetMaxHealth(player.maxHealth);
@@ -85,16 +90,20 @@ public class SimpleCollectibleScript : MonoBehaviour {
 		if (CollectibleType == CollectibleTypes.SpeedBoost) {
 			//increase speed for 3 seconds
 			player.animator.SetBool("IsBoosted", true);
+			particleSystem.Play();
 			StartCoroutine(speedBoostEnd(3.0f)); //disable speed boost after 3 seconds has elapsed
 			
 		}
 
 		if (CollectibleType == CollectibleTypes.TimeDilation) {
 
-			//Add in code here;
+			//prob keep the same effect with speedBoost SO MAYBE just delete the TimeDilationEFFECT and REUSE WarpSpeedEFFECT
+			//hopefully particles will slowdown during slow-mo
+			particleSystem.Play(); 
+
 			//Time.timeScale = 0.4f;
 			Debug.Log ("TIME DILATION Collision!!");
-			timeDilation(3);
+			timeDilation(3f);
 		}
 
 		gameObject.SetActive(false);

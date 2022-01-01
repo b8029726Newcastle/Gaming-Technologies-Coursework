@@ -18,6 +18,7 @@ public class BoostBehaviour : StateMachineBehaviour
         timer += Time.deltaTime;
         if(timer > 4)
         {
+            //end speed boost after 4 seconds
             animator.SetBool("IsBoosted", false);
         }
     }

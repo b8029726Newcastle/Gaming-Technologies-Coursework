@@ -43,6 +43,10 @@ public class ObstaclePush : MonoBehaviour
             forceDirection.y = 0;
             forceDirection.Normalize();
 
+            //add force to obstacles
+            //this makes the  spikeballs rollable to an extent
+            //as a result, forces players to be more careful as to not "continually push" a spikeball
+            //otherwise they would incur continuous damage!
             rigidbody.AddForceAtPosition(forceDirection * forceMagnitude, transform.position, ForceMode.Impulse);
         }
     }
@@ -55,6 +59,7 @@ public class ObstaclePush : MonoBehaviour
              * players take more damage if collision lingers
              * (i.e. Some obstacles are designed to be movable and a player accidentally pushing an obstacle may cause them damage over time!)*/
             player.TakeDamageOverTime(3, 1);
+            FindObjectOfType<AudioManager>().Play("Slice Damage"); //play accompanying audio when player takes damage
         }
         if (collision.gameObject.CompareTag("Spikeball 2"))
         {
@@ -62,15 +67,18 @@ public class ObstaclePush : MonoBehaviour
              * players take more damage if collision lingers
              * (i.e. Some obstacles are designed to be movable and a player accidentally pushing an obstacle may cause them damage over time!)*/
             player.TakeDamageOverTime(5, 1);
+            FindObjectOfType<AudioManager>().Play("Slice Damage"); //play accompanying audio when player takes damage
         }
 
         if (collision.gameObject.CompareTag("Enemy Titan"))
         {
+            //maybe remove this because it's already on the player movement for Character to take damage
             Debug.Log($"Colliding with {gameObject.tag} , you are taking initial 20collision damage!");
             /*players receives 3 damage on initial collision
              * players take more damage if collision lingers
              * (i.e. Some obstacles are designed to be movable and a player accidentally pushing an obstacle may cause them damage over time!)*/
             player.TakeDamage(5);
+            FindObjectOfType<AudioManager>().Play("Blunt Damage");
         }
 
     }

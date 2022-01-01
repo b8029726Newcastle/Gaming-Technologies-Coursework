@@ -13,6 +13,8 @@ public class IdleBehaviour : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        //Titan AI only starts chasing after the player has pressed a key when in-game
+        //Titan AI will idle at the start if player hasn't pressed anything
         if (Input.anyKey)
         {
             animator.SetBool("isChasing", true);

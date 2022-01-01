@@ -181,13 +181,14 @@ public class PlayerMovement : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Enemy Titan")) ;
+        if (collision.gameObject.CompareTag("Enemy Titan"))
         {
             Debug.Log($"Colliding with {gameObject.tag} , you are taking initial 20collision damage!");
             /*players receives 3 damage on initial collision
              * players take more damage if collision lingers
              * (i.e. Some obstacles are designed to be movable and a player accidentally pushing an obstacle may cause them damage over time!)*/
             TakeDamage(20);
+            FindObjectOfType<AudioManager>().Play("Blunt Damage"); //play accompanying audio when player takes damage
         }
     }
 }

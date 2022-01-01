@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4393056566724263984
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4393056566724263986}
+  - component: {fileID: 4393056566724263985}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4393056566724263986
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4393056566724263984}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4393056566724263985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4393056566724263984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7ee55ae100c7d2478632095cc672cee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundArray:
+  - name: Background Theme
+    audioClip: {fileID: 8300000, guid: 816b6eab58d24c646a55f35fb63b0f1f, type: 3}
+    volume: 0.5
+    pitch: 1.3
+    loop: 1
+    audioSource: {fileID: 0}
+  - name: Blunt Damage
+    audioClip: {fileID: 8300000, guid: 40eb0b9ea2dd1514ab032afe07ad52ef, type: 3}
+    volume: 0.3
+    pitch: 1
+    loop: 0
+    audioSource: {fileID: 0}
+  - name: Slice Damage
+    audioClip: {fileID: 8300000, guid: 5a4cd7b4adebc69448b3ec45b951de79, type: 3}
+    volume: 0.6
+    pitch: 1
+    loop: 0
+    audioSource: {fileID: 0}
+  - name: Growl
+    audioClip: {fileID: 8300000, guid: c3cbdaf8e59210840b8b4bfe6298cb00, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    audioSource: {fileID: 0}
+  - name: Distant Growl
+    audioClip: {fileID: 8300000, guid: d6f907c5b22b76646aac60d9f90314f3, type: 3}
+    volume: 0.7
+    pitch: 0.9
+    loop: 0
+    audioSource: {fileID: 0}
+  - name: Roar
+    audioClip: {fileID: 8300000, guid: 801538c8392e42c49a37ab55100cb52f, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 0
+    audioSource: {fileID: 0}

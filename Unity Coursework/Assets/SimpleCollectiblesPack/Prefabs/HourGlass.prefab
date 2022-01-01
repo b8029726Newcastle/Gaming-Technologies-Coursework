@@ -101,8 +101,11 @@ MonoBehaviour:
   CollectibleType: 0
   rotate: 1
   rotationSpeed: 10
-  collectSound: {fileID: 0}
+  collectSound: {fileID: 8300000, guid: 4aadd92b053a5b64daf142dc5a25146d, type: 3}
   collectEffect: {fileID: 1702657300312902, guid: a45c51da10cf1a84abc6a99c06951e3f, type: 3}
+  minimumTimeScale: 0.4
+  durationTime: 0
+  particleSystem: {fileID: 8448882251116437770, guid: da2c8da1d1383af46aaeed287c11399b, type: 3}
 --- !u!82 &82573295217224826
 AudioSource:
   m_ObjectHideFlags: 0
