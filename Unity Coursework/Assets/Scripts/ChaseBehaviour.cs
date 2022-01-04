@@ -5,62 +5,112 @@ using UnityEngine.AI; //for NavMeshAgent
 
 public class ChaseBehaviour : StateMachineBehaviour
 {
-    private Transform player;
+    private Transform playerTransform;
     private NavMeshAgent navMeshAgent;
     public float speedAI;
+
+    CollectablesCounter ringCount;
+    PlayerMovement player;
+    Timer timer;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        navMeshAgent = FindObjectOfType<NavMeshAgent>(); //new
+        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        navMeshAgent = FindObjectOfType<NavMeshAgent>();
+
+        player = FindObjectOfType<PlayerMovement>(); //access other script as an instance
+        ringCount = FindObjectOfType<CollectablesCounter>();
+        timer = FindObjectOfType<Timer>();
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        //navMeshAgent.transform.position = Vector3.MoveTowards(movePositionTransform.position, player.position, speedAI * Time.deltaTime); //new
-        //navMeshAgent.transform.position = (movePositionTransform.position * speedAI) *  Time.deltaTime; //new
-
-        //navMeshAgent.transform.position = Vector3.MoveTowards(animator.transform.position, player.position, speedAI * Time.deltaTime); //new
-
-        //set player's position as AI destination for pathfinding
-        //AI moves towards players direction and consequently, automatically chooses the shortest path to the player
-        //unless there are obstacles on the path
-        //advanced pathfinding: Use NavMesh so Titan AI/Agent can move around obstacles such as the spikeballs on the map
-        navMeshAgent.speed = speedAI;
-        navMeshAgent.SetDestination(player.position);
-        //navMeshAgent.transform.position = Vector3.MoveTowards(navMeshAgent.transform.position, player.position, speedAI * Time.deltaTime);
-
-        //animator.transform.position = Vector3.MoveTowards(animator.transform.position, player.position, speedAI * Time.deltaTime);
-        animator.transform.LookAt(player.transform);
+        /* ADVANCED PATHFINDING: Set player's position as AI destination for pathfinding
+         * ADVANCED PATHFINDING: AI moves towards players general direction and consequently, automatically chooses the shortest path to the player
+         * ADVANCED PATHFINDING: Use NavMesh so Titan AI / NavmeshAgent can move around obstacles such as the spikeballs on the map
+         * Obstacles are set to "Navigation Static"
+         */
+        navMeshAgent.speed = speedAI; //set in animator's inspector for Chase, Pursuit Mode, and Rage Mode State
+        navMeshAgent.SetDestination(playerTransform.position);
+        animator.transform.LookAt(playerTransform.transform); //set where Enemy Titan AI is looking at
 
 
-        var distance = Vector3.Distance(animator.transform.position, player.position);
-        //Debug.Log($"Distance is {distance}");
+        var distance = Vector3.Distance(animator.transform.position, playerTransform.position);
+        //Debug.Log($"Distance is {distance}"); //uncomment to see distance between player and AI in real time
 
-        //maybe make this into SWITCH STATEMENT
-        if (distance < 2)
+        //ADVANCED REAL-TIME AI TECHNIQUES: Goal Oriented Action Programming (GOAP)
+        if (distance < 1.9)
         {
+            //ADVANCED GAMEPLAY PROGRESSION TECHNIQUES: Enemy Titan AI tries to attack when the player is close enough.
             animator.SetBool("isInRange", true);
-            distance = Vector3.Distance(animator.transform.position, player.position); //prob  don't need this line
+
+            //AUDIO: Play accompanying sound clip
             FindObjectOfType<AudioManager>().Play("Roar");
         }
-        if (distance > 2)
+        if (distance >= 2)
         {
+            //ADVANCED GAMEPLAY PROGRESSION TECHNIQUES: Enemy Titan AI is not close enough to attack,
+            //instead continues to chase player depending on appropriate chase behaviour (normal chase or rage mode)
             animator.SetBool("isInRange", false);
         }
-        if (distance <= 4) //was 5, see which is better
+        if (distance <= 3.5)
         {
-            //set back to normal chasing speed
+            /* ADVANCED GAMEPLAY PROGRESSION TECHNIQUES: Set back to normal Chase Mode (or Rage Mode depending on situation) when AI 
+             * is not in range to attack but not too far to activate Pursuit Mode.
+             * (typically disables the Pursuit Mode when Enemy Titan AI closes the gap after falling behind)
+             */
             animator.SetBool("isTooFar", false);
+
+            //AUDIO: Play accompanying sound clip
             FindObjectOfType<AudioManager>().Play("Growl");
         }
         if (distance > 20)
         {
-            //activate pursuit mode to catch up to the player
+            //ADVANCED GAMEPLAY PROGRESSION TECHNIQUES: Activate Pursuit Mode to catch up to the player when Enemy Titan AI falls too far behind.
+            //For instance, when the player gets way ahead of the AI after a Speed Boost.
             animator.SetBool("isTooFar", true);
+
+            //AUDIO: Play accompanying sound clip
             FindObjectOfType<AudioManager>().Play("Distant Growl");
+
+            Debug.Log("Enemy Titan AI: Pursuit Mode Activated!");
+        }
+        if(timer.timeValue <= 30 || CollectablesCounter.count >= 54 || player.currentHealth < 15)
+        {
+            /* ADVANCED GAMEPLAY PROGRESSION TECHNIQUES:
+             * Activate Rage Mode when (a) there is only 30 seconds left
+             * or (b) when there are only 10 rings left (54/64 rings collected)
+             * or (c) if player has less than 15 health
+             */
+            animator.SetBool("isEnraged", true);
+
+            Debug.Log("Enemy Titan AI: Rage Mode Activated!");
+
+            if (CollectablesCounter.count >= 54)
+            {
+                Debug.Log($"Ring Collectables left: {CollectablesCounter.count}");
+            }
+            if (player.currentHealth < 15)
+            {
+                Debug.Log($"Health is low, Current Health: {player.currentHealth}");
+            }
+
+        }
+        if (timer.timeValue > 30 && CollectablesCounter.count < 54 && player.currentHealth >= 15)
+        {
+            /* ADVANCED GAMEPLAY PROGRESSION TECHNIQUES:
+             * Deactivate Rage Mode if (a) there's more than 30 seconds left (maybe player picked up a "Time Dilation" powerup to 
+             * increase 5 seconds to the current timer's value) as long as player hasn't collected 54/64 Rings yet 
+             * and WHILE player has greater than 15 health.
+             * 
+             * Deactivate Rage Mode if (b) player has at least 15 health or greater (maybe player picked up a "Health Boost" powerup to increase current health)
+             * as long as player hasn't collected 54/64 Rings yet and whiLE there's more than 30 seconds left.
+             */
+            animator.SetBool("isEnraged", false);
+            Debug.Log("Enemy Titan AI: Rage Mode Deactivated!");
+
         }
     }
 

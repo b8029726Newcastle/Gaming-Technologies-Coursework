@@ -40,13 +40,12 @@ public class Flock : MonoBehaviour
         for(int i = 0; i < startingCount; i++)
         {
             //initialise  and instantiate the flock
-            //prob Random.insideUnitCircle
             FlockAgent newAgent = Instantiate(agentPrefab, 
                 Random.insideUnitSphere * startingCount * agentDensity,
-                Quaternion.Euler(Vector3.forward * Random.Range(0f,  360f)), //maybe Vector3.up
+                Quaternion.Euler(Vector3.forward * Random.Range(0f,  360f)),
                 transform);
             newAgent.name = "Agent " + i;
-            newAgent.Initialise(this); //new
+            newAgent.Initialise(this);
             agents.Add(newAgent);
         }
     }
@@ -54,7 +53,7 @@ public class Flock : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //iterate through agents to find relevant neighbours and apply behaviours based neighbourh context
+        //iterate through agents to find relevant neighbours and apply behaviours based on neighbour context
         foreach(FlockAgent agent in agents)
         {
             List<Transform> context = GetNearbyObjects(agent);

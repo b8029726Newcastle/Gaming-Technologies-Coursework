@@ -250,7 +250,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forceMagnitude: 0
-  door: {fileID: 0}
 --- !u!64 &2717349
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -368,7 +367,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forceMagnitude: 0
-  door: {fileID: 0}
 --- !u!64 &64706211
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3625,7 +3623,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forceMagnitude: 0
-  door: {fileID: 0}
 --- !u!4 &778440941 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 8f445961f3af4734eab6b615aef5f1e5, type: 3}
@@ -4570,7 +4567,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forceMagnitude: 0
-  door: {fileID: 0}
 --- !u!64 &963661787
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4815,7 +4811,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forceMagnitude: 0
-  door: {fileID: 0}
 --- !u!64 &1000138739
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -5107,7 +5102,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forceMagnitude: 0
-  door: {fileID: 0}
 --- !u!64 &1051663985
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -5789,6 +5783,8 @@ MonoBehaviour:
   healthBar: {fileID: 475524634}
   speedMultiplier: 0
   animator: {fileID: 0}
+  currentScene:
+    m_Handle: 0
 --- !u!4 &1163220694 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a7113b76011b64f49b54395a7e79aed9, type: 3}
@@ -5845,7 +5841,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forceMagnitude: 1
-  door: {fileID: 1288496827}
 --- !u!64 &1163220698
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -6421,7 +6416,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forceMagnitude: 0
-  door: {fileID: 0}
 --- !u!64 &1248974814
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -6798,6 +6792,10 @@ PrefabInstance:
       value: DoorRight
       objectReference: {fileID: 0}
     - target: {fileID: 1257244082436250, guid: df2f14ece3a3a0847aad4f1407b39c50, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1257244082436250, guid: df2f14ece3a3a0847aad4f1407b39c50, type: 3}
       propertyPath: m_TagString
       value: DoorRight1
       objectReference: {fileID: 0}
@@ -6811,7 +6809,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4856336461430574, guid: df2f14ece3a3a0847aad4f1407b39c50, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.0000023841858
+      value: 0.13
       objectReference: {fileID: 0}
     - target: {fileID: 4856336461430574, guid: df2f14ece3a3a0847aad4f1407b39c50, type: 3}
       propertyPath: m_LocalPosition.z
@@ -6878,7 +6876,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forceMagnitude: 0
-  door: {fileID: 0}
 --- !u!1 &1324500582
 GameObject:
   m_ObjectHideFlags: 0
@@ -6961,7 +6958,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forceMagnitude: 0
-  door: {fileID: 0}
 --- !u!4 &1324712976 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 97ef08cc7411beb4b833c8331d89702f, type: 3}
@@ -10962,7 +10958,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forceMagnitude: 0
-  door: {fileID: 0}
 --- !u!64 &2105987718
 MeshCollider:
   m_ObjectHideFlags: 0

@@ -1,12 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement; //to access Scene
 
 public class PlayerMovement : MonoBehaviour
 {
+    /* Removed player maximumSpeed because I'm now using the animation speed on Blend Tree
+     * Doing so not only allows the character to move around the map faster as in previous implementation
+     * BUT MORE IMPORTANTLY makes the character "appear" to run faster in terms of animation
+     */
     [SerializeField]
-    float rotationSpeed, jumpSpeed, jumpButtonGracePeriod; //removed  maximumSpeed because I'm now using the animation speed on Blend Tree
-
+    float rotationSpeed, jumpSpeed, jumpButtonGracePeriod; 
+    
     [SerializeField]
     Transform cameraTransform;
 
@@ -22,7 +27,16 @@ public class PlayerMovement : MonoBehaviour
     private float ySpeed, originalStepOffset;
     private float? lastGroundedTime, jumpButtonPressedTime; //nullible field
 
- 
+    [HideInInspector]
+    public Scene currentScene;
+
+
+    private void Awake()
+    {
+        //hide and lock cursor at the centre when in-game
+        //pressing "Esc" will unlock the cursor again
+        Cursor.lockState = CursorLockMode.Locked;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -32,16 +46,24 @@ public class PlayerMovement : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         originalStepOffset = characterController.stepOffset;
 
+        //set health status at start of the game
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(currentHealth);
+
+        //get current scene in case it needs to be reloaded at some point if the player fails to beat a level
+        currentScene = SceneManager.GetActiveScene();
+        Debug.Log("Current active scene/level is: " + currentScene.name);
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(currentHealth <= 0)
         {
-            TakeDamage(5);
+            //ADVANCED GAMEPLAY PROGRESSION TECHNIQUES: Reload current scene if player health goes down to 0
+            SceneManager.LoadScene(currentScene.name);
+            Debug.Log("Game Over: You've been incapacitated! Reloading current scene/level: " + currentScene.name);
         }
 
 
@@ -50,25 +72,26 @@ public class PlayerMovement : MonoBehaviour
         float verticalInput = Input.GetAxis("Vertical");
 
         Vector3 movementDirection = new Vector3(horizontalInput, 0, verticalInput);
-        float inputMagnitude = Mathf.Clamp01(movementDirection.magnitude); //use magnitude to reflect movement speed behaviour IF player decides to use thumbsticks
+
+        //use magnitude to reflect movement speed behaviour -- can be useful IF player decides to use thumbsticks for movement controls
+        float inputMagnitude = Mathf.Clamp01(movementDirection.magnitude);
 
         if(Input.GetKey(KeyCode.LeftShift)  || Input.GetKey(KeyCode.RightShift))
         {
-            inputMagnitude /= 2; //reduce character speed by half
+            inputMagnitude /= 2; //reduce character speed by half -- from running speed to walking speed
         }
         animator.SetFloat("Input Magnitude", inputMagnitude, 0.05f, Time.deltaTime); //adjust animations according to input magnitude, also add 0.05f damp time so changing animations dont snap too quickly
 
-        //float speed = inputMagnitude * maximumSpeed; //make sure speed stays between 0 and 1
         movementDirection = Quaternion.AngleAxis(cameraTransform.rotation.eulerAngles.y, Vector3.up) * movementDirection;
         movementDirection.Normalize();
 
-        ySpeed += Physics.gravity.y * Time.deltaTime; //adjusting for gravity over time, -9.81/s
+        ySpeed += Physics.gravity.y * Time.deltaTime; //adjusting for gravity over time, -9.81m/s
 
         if(characterController.isGrounded)
         {
             lastGroundedTime = Time.time;
         }
-        if(Input.GetButtonDown("Jump"))
+        if(Input.GetButtonDown("Jump")) //mapped to the space button by default
         {
             jumpButtonPressedTime = Time.time;
         }
@@ -76,23 +99,24 @@ public class PlayerMovement : MonoBehaviour
         {
             characterController.stepOffset = originalStepOffset;
             ySpeed = -0.3f; //prevent character from dropping off suddenly when going down a platform
-            if (Time.time - jumpButtonPressedTime <= jumpButtonGracePeriod) //mapped to the space button by default
+            if (Time.time - jumpButtonPressedTime <= jumpButtonGracePeriod)
             {
                 ySpeed = jumpSpeed;
 
-                //set to null so character can't jump repeatedly whiile in grace period
+                //set to null so character can't jump repeatedly while in grace period
                 jumpButtonPressedTime = null;
                 lastGroundedTime = null;
             }
         }
         else
         {
-            characterController.stepOffset = 0; //to prevent jerkiness when pressing jumping into a rigidbody WHILST the character is on top of a platform
+            characterController.stepOffset = 0; //to prevent jerkiness when jumping into a rigidbody WHILST the character is on top of a platform
         }
 
         if (movementDirection != Vector3.zero) //check if the character is moving
         {
             animator.SetBool("IsMoving", true);
+
             //rotate character in direction it's moving towards
             Quaternion toRotation = Quaternion.LookRotation(movementDirection, Vector3.up);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
@@ -105,28 +129,28 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnAnimatorMove()
     {
-        //move character relative to the world
-        //transform.Translate(movementDirection * magnitude * speed * Time.deltaTime, Space.World); 
+        /* The position change according to animation, no need to calculate speed and even adjust
+         * for delta time (previously movementDirection * speed).
+         * I multiplied by speedMultiplier of 2 so it moves further along the map
+         * compared to relying purely on distance covered by the running animation itself.
+         */
+        Vector3 velocity = animator.deltaPosition * speedMultiplier;
+
+        //adjust velocity to prevent character from bouncing it's way down a slope
+        velocity = AdjustVelocityToSlope(velocity); 
+        velocity.y += ySpeed * Time.deltaTime;
 
         //character controller handles collisions
         //also ensures consistent player movement regardless of frame rate similar to Time.deltaTime
-        Vector3 velocity = animator.deltaPosition * speedMultiplier; //position change according to animation, no need to calculate speed and even adjust for delta time           //previously movementDirection * speed
-        //I multiplied by speedMultiplier of 2 so it moves further along the map compared to relying purely on distance covered by the running animation itself
-
-
-        velocity = AdjustVelocityToSlope(velocity); //adjust velocity to prevent character from bouncing it's way down a slope
-        velocity.y += ySpeed * Time.deltaTime;
-        characterController.Move(velocity); //multiply by deltaTime to ensure character/player movement is consistent regardless of frame rate
+        characterController.Move(velocity);
     }
 
     private Vector3 AdjustVelocityToSlope(Vector3 velocity)
     {
-        //might not need this
-
         //method to smoothly move a player across a downward slope
         var ray = new Ray(transform.position, Vector3.down);
 
-        if(Physics.Raycast(ray, out RaycastHit hitInfo, 0.2f)) //max raycast distance of 0.2f to so that it only picks up collisions close to the character i.e. THE GROUND/PLANE
+        if(Physics.Raycast(ray, out RaycastHit hitInfo, 0.2f)) //max raycast distance of 0.2f so that it only picks up collisions close to the character i.e. THE GROUND/PLANE
         {
             //if there is a collision, rotate towards direction the surface is facing
             var slopeRotation = Quaternion.FromToRotation(Vector3.up, hitInfo.normal);
@@ -141,21 +165,9 @@ public class PlayerMovement : MonoBehaviour
         return velocity;
     }
 
-    private void OnApplicationFocus(bool focus)
+    public void TakeDamage(int damageAmount) //public so it can be accessible by other classes like the Titan Enemy AI/Spike Obstacles
     {
-        //hide and lock cursor at the centre when in-game
-        if (focus)
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.None;
-        }
-
-    }
-    public void TakeDamage(int damageAmount) //public so it can be accessible by other classes like the AI/Obstacles
-    {
+        //deduct the player's current health depending on the damageAmount assigned within the other functions/scripts whenever TakeDamage() function is called
         currentHealth -= damageAmount;
         healthBar.SetHealth(currentHealth);
     }
@@ -175,7 +187,7 @@ public class PlayerMovement : MonoBehaviour
             TakeDamage(damagePerLoop);
             Debug.Log("Current Health is:" + currentHealth);
             amountDamaged += damagePerLoop;
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(1f); //the players gets damaged every second depending on how long their collision stays with the spikeballs
 
         }
     }
@@ -183,12 +195,14 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy Titan"))
         {
-            Debug.Log($"Colliding with {gameObject.tag} , you are taking initial 20collision damage!");
-            /*players receives 3 damage on initial collision
-             * players take more damage if collision lingers
-             * (i.e. Some obstacles are designed to be movable and a player accidentally pushing an obstacle may cause them damage over time!)*/
+            /* Player receives 20 damage on initial collision with the Enemy Titan AI; i.e. The Titan charging at them
+             * Player also gets damaged when Titan attacks the player, given that player is within attack range AND collision range.
+             */
             TakeDamage(20);
-            FindObjectOfType<AudioManager>().Play("Blunt Damage"); //play accompanying audio when player takes damage
+            Debug.Log($"You've been hit by the {collision.gameObject.tag} , you are taking 20 damage!");
+
+            //AUDIO: Play accompanying audio when player takes damage
+            FindObjectOfType<AudioManager>().Play("Blunt Damage");
         }
     }
 }

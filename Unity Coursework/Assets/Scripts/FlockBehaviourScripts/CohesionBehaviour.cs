@@ -6,7 +6,9 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Flock/Behaviour/Cohesion")] //new menu items can be seen after clicking on assets then "right" click > create
 public class CohesionBehaviour : FilteredFlockBehaviour //inherit from FilteredFlockBehaviour Class
 {
-    //implement abstract class
+    //ADVANCED REAL-TIME AI TECHNIQUES: Flocking Cohesion Behaviour
+
+    //APPROPRIATE DESIGN PATTERNS AND GAME STRUCTURE: Overriding an Inherited Method from FilteredFlockBehaviour Class which also Inherited from FlockBehaviour Class
     public override Vector3 CalculateMove(FlockAgent agent, List<Transform> context, Flock flock)
     {
         //if no neighbours, return no adjustment

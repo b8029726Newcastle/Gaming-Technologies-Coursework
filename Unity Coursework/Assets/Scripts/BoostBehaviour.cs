@@ -18,7 +18,7 @@ public class BoostBehaviour : StateMachineBehaviour
         timer += Time.deltaTime;
         if(timer > 4)
         {
-            //end speed boost after 4 seconds
+            //end speed boost after 4 seconds (initial speed boost is activated in Collectible Script whenever a "Star" is picked up)
             animator.SetBool("IsBoosted", false);
         }
     }

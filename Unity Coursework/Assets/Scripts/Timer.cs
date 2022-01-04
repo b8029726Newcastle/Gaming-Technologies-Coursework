@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI; //to acess Text
-using UnityEngine.SceneManagement;
+using UnityEngine.SceneManagement; //to access Scene Manager
 
 public class Timer : MonoBehaviour
 {
@@ -10,10 +10,12 @@ public class Timer : MonoBehaviour
     public float timeValue = 180; //3 minutes or 180 seconds
     public bool levelComplete = false;
 
+    PlayerMovement player;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        player = FindObjectOfType<PlayerMovement>(); //access other script as an instance
     }
 
     // Update is called once per frame
@@ -23,7 +25,6 @@ public class Timer : MonoBehaviour
         if (levelComplete)
             return;
 
-
         if(timeValue > 0)
         {
             timeValue -= Time.deltaTime;
@@ -32,10 +33,11 @@ public class Timer : MonoBehaviour
         {
             timeValue = 0;
         }
-        if(timeValue <=0)
+        if(timeValue <= 0)
         {
-            Debug.Log("Time ran out, game over!");
-            SceneManager.LoadScene("Level Select");
+            //ADVANCED GAMEPLAY PROGRESSION TECHNIQUES: Reload current scene if timer reaches 0
+            SceneManager.LoadScene(player.currentScene.name);
+            Debug.Log("Game Over: You ran out of time! Reloading current scene/level: " + player.currentScene.name);
         }
 
         DisplayTime(timeValue);

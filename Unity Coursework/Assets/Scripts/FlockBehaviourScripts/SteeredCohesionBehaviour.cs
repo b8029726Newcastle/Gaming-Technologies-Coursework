@@ -9,7 +9,9 @@ public class SteeredCohesionBehaviour : FilteredFlockBehaviour //inherit from Fi
     Vector3 currentVelocity;
     public float agentSmoothTime = 0.5f;
 
-    //implement abstract class
+    //ADVANCED REAL-TIME AI TECHNIQUES: Flocking SteeredCohesion Behaviour
+
+    //APPROPRIATE DESIGN PATTERNS AND GAME STRUCTURE: Overriding an Inherited Method from FilteredFlockBehaviour Class which also Inherited from FlockBehaviour Class
     public override Vector3 CalculateMove(FlockAgent agent, List<Transform> context, Flock flock)
     {
         //if no neighbours, return no adjustment
@@ -18,7 +20,7 @@ public class SteeredCohesionBehaviour : FilteredFlockBehaviour //inherit from Fi
 
         //add all points together and average
         Vector3 cohesionMove = Vector3.zero;
-        List<Transform> filteredContext = (filter == null) ? context : filter.Filter(agent, context); //new
+        List<Transform> filteredContext = (filter == null) ? context : filter.Filter(agent, context);
         foreach (Transform item in filteredContext)
         {
             //move towards position of neighbour

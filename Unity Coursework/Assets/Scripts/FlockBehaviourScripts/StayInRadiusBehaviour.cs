@@ -9,6 +9,9 @@ public class StayInRadiusBehaviour : FlockBehaviour //inherit from FlockBehaviou
     public Vector3 centre;
     public float radius = 15f;
 
+    //ADVANCED REAL-TIME AI TECHNIQUES: Flocking StayInRadius Behaviour
+
+    //APPROPRIATE DESIGN PATTERNS AND GAME STRUCTURE: Overriding an Inherited Method from FlockBehaviour Class
     public override Vector3 CalculateMove(FlockAgent agent, List<Transform> context, Flock flock)
     {
         //see how far away agent is from the centre

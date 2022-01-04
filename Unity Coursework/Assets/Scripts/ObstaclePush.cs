@@ -9,21 +9,11 @@ public class ObstaclePush : MonoBehaviour
     float forceMagnitude;
 
     PlayerMovement player;
-    public GameObject door;
 
     // Start is called before the first frame update
     void Start()
     {
         player = FindObjectOfType<PlayerMovement>(); //access other script as an instance
-
-        door = GameObject.FindGameObjectWithTag("DoorRight1");
-
-        string sceneName = SceneManager.GetActiveScene().name;
-        Debug.Log("Scene name is " + sceneName);
-        if(sceneName == "Level2")
-        {
-            door.SetActive(false); //set it to TRUE when all RINGS have been COLLECTED --- Player will then pass  through this door to get to the next levll
-        }
     }
 
     // Update is called once per frame
@@ -32,67 +22,53 @@ public class ObstaclePush : MonoBehaviour
         
     }
 
-    private void OnControllerColliderHit(ControllerColliderHit hit)
+    private void OnControllerColliderHit(ControllerColliderHit hit) //function gets called whenever the character controller collides with anything
     {
-        //function gets called whenever the character controller collides with anything
         Rigidbody rigidbody = hit.collider.attachedRigidbody;
 
         if(rigidbody != null)
         {
-            Vector3 forceDirection = hit.gameObject.transform.position - transform.position; //position of character minus position  of obstacle
+            Vector3 forceDirection = hit.gameObject.transform.position - transform.position; //position of character minus position of obstacle
             forceDirection.y = 0;
             forceDirection.Normalize();
 
-            //add force to obstacles
-            //this makes the  spikeballs rollable to an extent
-            //as a result, forces players to be more careful as to not "continually push" a spikeball
-            //otherwise they would incur continuous damage!
+            /* Add force to obstacles.
+             * This makes the spikeballs rollable/pushable to an extent.
+             * As a result, forces players to be more careful as to not "continually push" a spikeball.
+             * Otherwise they would incur continuous damage!
+             */
             rigidbody.AddForceAtPosition(forceDirection * forceMagnitude, transform.position, ForceMode.Impulse);
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionStay(Collision collision)
     {
         if (collision.gameObject.CompareTag("Spikeball 1"))
         {
-            /*players receives 3 damage on initial collision
-             * players take more damage if collision lingers
-             * (i.e. Some obstacles are designed to be movable and a player accidentally pushing an obstacle may cause them damage over time!)*/
+            /* Players receives 3 damage on initial collision.
+             * Players take more damage if collision lingers.
+             * (i.e. Some obstacles are designed to be movable and a player accidentally pushing on a spikeball may cause them damage over time!)
+             */
             player.TakeDamageOverTime(3, 1);
-            FindObjectOfType<AudioManager>().Play("Slice Damage"); //play accompanying audio when player takes damage
+
+            //AUDIO: Play accompanying audio when player takes damage
+            FindObjectOfType<AudioManager>().Play("Slice Damage");
+
+            Debug.Log($"Colliding with {collision.gameObject.tag} , you are taking 3 collision damage!");
         }
         if (collision.gameObject.CompareTag("Spikeball 2"))
         {
-            /*players receives 5 damage on initial collision
-             * players take more damage if collision lingers
-             * (i.e. Some obstacles are designed to be movable and a player accidentally pushing an obstacle may cause them damage over time!)*/
+            /* Players receives 5 damage on initial collision.
+             * Players take more damage if collision lingers.
+             * (i.e. Some obstacles are designed to be movable and a player accidentally pushing on a spikeball may cause them damage over time!)
+             */
             player.TakeDamageOverTime(5, 1);
-            FindObjectOfType<AudioManager>().Play("Slice Damage"); //play accompanying audio when player takes damage
+
+            //AUDIO: Play accompanying audio when player takes damage
+            FindObjectOfType<AudioManager>().Play("Slice Damage");
+
+            Debug.Log($"Colliding with {collision.gameObject.tag} , you are taking 5 collision damage!");
         }
 
-        if (collision.gameObject.CompareTag("Enemy Titan"))
-        {
-            //maybe remove this because it's already on the player movement for Character to take damage
-            Debug.Log($"Colliding with {gameObject.tag} , you are taking initial 20collision damage!");
-            /*players receives 3 damage on initial collision
-             * players take more damage if collision lingers
-             * (i.e. Some obstacles are designed to be movable and a player accidentally pushing an obstacle may cause them damage over time!)*/
-            player.TakeDamage(5);
-            FindObjectOfType<AudioManager>().Play("Blunt Damage");
-        }
-
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("DoorLeft1")) //was PLAYER  --DELETE COMMENT
-        {
-            SceneManager.LoadScene("Level1");
-        }
-
-        if (other.gameObject.CompareTag("DoorRight1"))
-        {
-            SceneManager.LoadScene("Level2");
-        }
     }
 }

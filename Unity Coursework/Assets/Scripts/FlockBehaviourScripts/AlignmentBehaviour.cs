@@ -4,9 +4,11 @@ using UnityEngine;
 
 //scriptable object
 [CreateAssetMenu(menuName = "Flock/Behaviour/Alignment")] //new menu items can be seen after clicking on assets then "right" click > create
-public class AlignmentBehaviour : FilteredFlockBehaviour //inherit from //new menu items can be seen after clicking on assets then "right" click > create Class
+public class AlignmentBehaviour : FilteredFlockBehaviour //inherit from FilteredFlockBehaviour Class
 {
-    //implement abstract class
+    //ADVANCED REAL-TIME AI TECHNIQUES: Flocking Alignment Behaviour
+
+    //APPROPRIATE DESIGN PATTERNS AND GAME STRUCTURE: Overriding an Inherited Method from FilteredFlockBehaviour Class which also Inherited from FlockBehaviour Class
     public override Vector3 CalculateMove(FlockAgent agent, List<Transform> context, Flock flock)
     {
         //if no neighbours, maintain current alignment
@@ -18,7 +20,7 @@ public class AlignmentBehaviour : FilteredFlockBehaviour //inherit from //new me
         List<Transform> filteredContext = (filter == null) ? context : filter.Filter(agent, context); //new
         foreach (Transform item in filteredContext)
         {
-            alignmentMove += item.transform.forward; //item.transform.up
+            alignmentMove += item.transform.forward;
         }
         alignmentMove /= context.Count;
 

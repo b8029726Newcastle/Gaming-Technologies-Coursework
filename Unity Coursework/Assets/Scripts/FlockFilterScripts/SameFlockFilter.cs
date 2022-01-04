@@ -6,6 +6,9 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Flock/Filter/Same Flock")] 
 public class SameFlockFilter : ContextFilter //inherit from context filter
 {
+    //ADVANCED REAL-TIME AI TECHNIQUES: Flocking
+
+    //APPROPRIATE DESIGN PATTERNS AND GAME STRUCTURE: Overriding an Inherited Method from ContextFilter Class
     public override List<Transform> Filter(FlockAgent agent, List<Transform> original)
     {
         List<Transform> filtered = new List<Transform>();

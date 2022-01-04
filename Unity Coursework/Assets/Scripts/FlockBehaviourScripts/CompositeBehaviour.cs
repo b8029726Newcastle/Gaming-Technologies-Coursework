@@ -9,7 +9,9 @@ public class CompositeBehaviour : FlockBehaviour //inherit from FlockBehaviour C
     public FlockBehaviour[] behaviours;
     public float[] weights;
 
-    //implement abstract class
+    //ADVANCED REAL-TIME AI TECHNIQUES: Flocking Composite Behaviour
+
+    //APPROPRIATE DESIGN PATTERNS AND GAME STRUCTURE: Overriding an Inherited Method from FlockBehaviour Class
     public override Vector3 CalculateMove(FlockAgent agent, List<Transform> context, Flock flock)
     {
         //handle data mismatch

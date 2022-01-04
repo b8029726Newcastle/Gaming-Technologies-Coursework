@@ -22,7 +22,7 @@ public class AudioManager : MonoBehaviour
 
             sound.audioSource.loop = sound.loop;
         }
-        //play ambient music clips for each scene or level
+        //AUDIO: Play ambient music clips for each scene or level
         Play("Background Theme");
     }
 
@@ -44,7 +44,7 @@ public class AudioManager : MonoBehaviour
             Debug.LogWarning("Sound: " + audioName + " not found!");
             return;
         }
-        //play audio clip
+        //AUDIO: Play audio clip
         sound.audioSource.Play();
 
     }
