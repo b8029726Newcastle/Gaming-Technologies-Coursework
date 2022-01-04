@@ -45,8 +45,8 @@ public class ObstaclePush : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Spikeball 1"))
         {
-            /* Players receives 3 damage on initial collision.
-             * Players take more damage if collision lingers.
+            /* Player receives 3 damage on initial collision with the spikes.
+             * Player takes more damage if collision lingers.
              * (i.e. Some obstacles are designed to be movable and a player accidentally pushing on a spikeball may cause them damage over time!)
              */
             player.TakeDamageOverTime(3, 1);
@@ -58,8 +58,8 @@ public class ObstaclePush : MonoBehaviour
         }
         if (collision.gameObject.CompareTag("Spikeball 2"))
         {
-            /* Players receives 5 damage on initial collision.
-             * Players take more damage if collision lingers.
+            /* Player receives 5 damage on initial collision with the spikes.
+             * Player takes more damage if collision lingers.
              * (i.e. Some obstacles are designed to be movable and a player accidentally pushing on a spikeball may cause them damage over time!)
              */
             player.TakeDamageOverTime(5, 1);

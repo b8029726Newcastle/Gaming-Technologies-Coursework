@@ -260,7 +260,7 @@ MonoBehaviour:
   behaviour: {fileID: 11400000, guid: 7072d15cad5d4c14cb8ae151fa78f5fe, type: 2}
   startingCount: 250
   driveFactor: 10
-  maxSpeed: 5
+  maxSpeed: 2
   neighbourRadius: 1.5
   avoidanceRadiusMultiplier: 0.5
 --- !u!4 &23184605
@@ -271,7 +271,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 23184603}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 45, y: 2, z: 25}
+  m_LocalPosition: {x: 45, y: 2, z: 35.83}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2358,7 +2358,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 486519113}
-  m_LocalRotation: {x: 0.20577288, y: -0.000000018825634, z: 0.000000003958518, w: 0.9785998}
+  m_LocalRotation: {x: 0.20577288, y: 0.000000018825634, z: -0.000000003958518, w: 0.9785998}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2813,7 +2813,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 615679440}
-  m_LocalRotation: {x: 0.18547434, y: 0.000000018903535, z: -0.0000000035680288, w: 0.98264915}
+  m_LocalRotation: {x: 0.18547434, y: -0.000000018903533, z: 0.0000000035680283, w: 0.98264915}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4034,7 +4034,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.18547435, y: 0.00000001890799, z: -0.0000000035671808, w: 0.98264915}
+  m_LocalRotation: {x: 0.18547435, y: -0.000000018907988, z: 0.000000003567181, w: 0.98264915}
   m_LocalPosition: {x: 50, y: 3.4299998, z: 18.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4879,6 +4879,8 @@ MonoBehaviour:
   healthBar: {fileID: 475524634}
   speedMultiplier: 0
   animator: {fileID: 0}
+  currentScene:
+    m_Handle: 0
 --- !u!4 &1163220694 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ba4eeff121b9e4d4c9ffa5ff7c13a74b, type: 3}
@@ -7079,7 +7081,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1683668340}
-  m_LocalRotation: {x: 0.1651661, y: 0.000000008485034, z: -0.0000000014209555, w: 0.9862658}
+  m_LocalRotation: {x: 0.1651661, y: -0.000000008485032, z: 0.0000000014209552, w: 0.9862658}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7220,7 +7222,7 @@ MonoBehaviour:
   behaviour: {fileID: 11400000, guid: 7072d15cad5d4c14cb8ae151fa78f5fe, type: 2}
   startingCount: 100
   driveFactor: 10
-  maxSpeed: 5
+  maxSpeed: 2
   neighbourRadius: 1.5
   avoidanceRadiusMultiplier: 0.5
 --- !u!4 &1722636769
@@ -7231,7 +7233,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1722636767}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 45, y: 2, z: 25}
+  m_LocalPosition: {x: 61.11, y: 2, z: 33.11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

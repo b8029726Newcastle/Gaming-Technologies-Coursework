@@ -27,11 +27,26 @@ public class ChaseBehaviour : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        /* ADVANCED PATHFINDING: Set player's position as AI destination for pathfinding
-         * ADVANCED PATHFINDING: AI moves towards players general direction and consequently, automatically chooses the shortest path to the player
-         * ADVANCED PATHFINDING: Use NavMesh so Titan AI / NavmeshAgent can move around obstacles such as the spikeballs on the map
-         * Obstacles are set to "Navigation Static"
+        //ADVANCED PATHFINDING: Set player's position as AI destination for pathfinding
+        //ADVANCED PATHFINDING: AI moves towards players general direction and consequently, automatically chooses the shortest path to the player
+          
+        /* ADVANCED PATHFINDING: Use Nav Mesh so Titan AI / Nav Mesh Agent can move around obstacles such as the barriers and spikeballs on the map
+         * 
+         * To test if the AI can indeed find its way around obstacles , the player can run around the group of LARGE spikeball in circles
+         * and the AI will choose the best possible path without passing through these objects like a ghost/spirit.
+         * Other objects suitabe for this test are the Concrete Warning Barriers and Plastic Stop Barriers because all large enough for the
+         * NavMeshAgent to revolve around.
          */
+
+        /* ADVANCED PATHFINDING: Use "Nav Mesh Obstacle" Component so AI can dynamically avoid obstacles such as the
+         * Smaller Spikeballs which can be moved by the player during accidental collision.
+         * 
+         * To demonstrate real-time obstacle avoidance, the user may deliberately push on one of these smaller spikeball obstacles and 
+         * notice on the "Scene view" that the NavMesh hole continually updates itself to follow where the obstacle has been moved.
+         * Make sure Show NavMesh is on (Window > AI > Navigation > Show NavMesh) and try to 
+         * reset window layout to "2 by 3" (Window > Layouts > 2 by 3) as you experiment so it's easier to see while playing the game.
+         */
+
         navMeshAgent.speed = speedAI; //set in animator's inspector for Chase, Pursuit Mode, and Rage Mode State
         navMeshAgent.SetDestination(playerTransform.position);
         animator.transform.LookAt(playerTransform.transform); //set where Enemy Titan AI is looking at
@@ -41,7 +56,7 @@ public class ChaseBehaviour : StateMachineBehaviour
         //Debug.Log($"Distance is {distance}"); //uncomment to see distance between player and AI in real time
 
         //ADVANCED REAL-TIME AI TECHNIQUES: Goal Oriented Action Programming (GOAP)
-        if (distance < 1.9)
+        if (distance <= 1.8)
         {
             //ADVANCED GAMEPLAY PROGRESSION TECHNIQUES: Enemy Titan AI tries to attack when the player is close enough.
             animator.SetBool("isInRange", true);
@@ -49,13 +64,13 @@ public class ChaseBehaviour : StateMachineBehaviour
             //AUDIO: Play accompanying sound clip
             FindObjectOfType<AudioManager>().Play("Roar");
         }
-        if (distance >= 2)
+        if (distance > 1.8)
         {
             //ADVANCED GAMEPLAY PROGRESSION TECHNIQUES: Enemy Titan AI is not close enough to attack,
             //instead continues to chase player depending on appropriate chase behaviour (normal chase or rage mode)
             animator.SetBool("isInRange", false);
         }
-        if (distance <= 3.5)
+        if (distance < 2.7)
         {
             /* ADVANCED GAMEPLAY PROGRESSION TECHNIQUES: Set back to normal Chase Mode (or Rage Mode depending on situation) when AI 
              * is not in range to attack but not too far to activate Pursuit Mode.
@@ -66,7 +81,7 @@ public class ChaseBehaviour : StateMachineBehaviour
             //AUDIO: Play accompanying sound clip
             FindObjectOfType<AudioManager>().Play("Growl");
         }
-        if (distance > 20)
+            if (distance >= 10)
         {
             //ADVANCED GAMEPLAY PROGRESSION TECHNIQUES: Activate Pursuit Mode to catch up to the player when Enemy Titan AI falls too far behind.
             //For instance, when the player gets way ahead of the AI after a Speed Boost.
@@ -109,7 +124,7 @@ public class ChaseBehaviour : StateMachineBehaviour
              * as long as player hasn't collected 54/64 Rings yet and whiLE there's more than 30 seconds left.
              */
             animator.SetBool("isEnraged", false);
-            Debug.Log("Enemy Titan AI: Rage Mode Deactivated!");
+            //Debug.Log("Enemy Titan AI: Rage Mode Deactivated!");
 
         }
     }
